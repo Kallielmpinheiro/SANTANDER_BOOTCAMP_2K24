@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicar Desconto</title>
+    <script>
+        async function applyDiscount() {
+            const amount = document.getElementById("amount").value;
+            const strategy = document.getElementById("strategy").value;
+
+            const response = await fetch(`/api/discount/apply?strategy=${strategy}&amount=${amount}`);
+            const discountAmount = await response.json();
+
+            document.getElementById("result").innerText = `Valor com desconto: ${discountAmount.toFixed(2)}`;
+        }
+    </script>
+</head>
+<body>
+<h1>Aplicar Desconto</h1>
+<label for="amount">Valor:</label>
+<input type="number" id="amount" name="amount" required>
+<br><br>
+<label for="strategy">Estratégia de Desconto:</label>
+<select id="strategy" name="strategy">
+    <option value="fixedDiscount">Desconto Fixo</option>
+    <option value="percentageDiscount">Desconto Percentual</option>
+</select>
+<br><br>
+<button onclick="applyDiscount()">Aplicar Desconto</button>
+<p id="result"></p>
+</body>
+</html>
