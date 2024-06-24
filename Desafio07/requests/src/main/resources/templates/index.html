@@ -1,0 +1,44 @@
+<!-- src/main/resources/templates/index.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Controle de Pedidos</title>
+</head>
+<body>
+<h1>Itens</h1>
+<form th:action="@{/web/itens}" method="post">
+    <input type="text" name="nome" placeholder="Nome do Item" required>
+    <input type="number" step="0.01" name="valor" placeholder="Valor" required>
+    <button type="submit">Adicionar Item</button>
+</form>
+<ul>
+    <li th:each="item : ${itens}">
+        <span th:text="${item.nome}">Nome</span> - <span th:text="${item.valor}">Valor</span>
+        <form th:action="@{/web/itens/{id}/delete(id=${item.id})}" method="post" style="display:inline;">
+            <button type="submit">Deletar</button>
+        </form>
+    </li>
+</ul>
+
+<h1>Pedidos</h1>
+<form th:action="@{/web/pedidos}" method="post">
+    <select name="itemIds" multiple required>
+        <option th:each="item : ${itens}" th:value="${item.id}" th:text="${item.nome}"></option>
+    </select>
+    <button type="submit">Criar Pedido</button>
+</form>
+<ul>
+    <li th:each="pedido : ${pedidos}">
+        <span>Pedido #<span th:text="${pedido.id}"></span> - Total: <span th:text="${pedido.valorTotal}"></span></span>
+        <ul>
+            <li th:each="item : ${pedido.itens}">
+                <span th:text="${item.nome}">Nome do Item</span>
+            </li>
+        </ul>
+        <form th:action="@{/web/pedidos/{id}/delete(id=${pedido.id})}" method="post" style="display:inline;">
+            <button type="submit">Deletar Pedido</button>
+        </form>
+    </li>
+</ul>
+</body>
+</html>
